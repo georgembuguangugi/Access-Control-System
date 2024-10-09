@@ -1,0 +1,64 @@
+# Access Control System
+
+class OfficeAccessControl:
+    def __init__(self):
+        # Define access levels for each area of the office
+        self.areas_access_levels = {
+            'Lobby': 1,
+            'Meeting Room': 2,
+            'Server Room': 4,
+            'Executive Office': 5
+        }
+        
+        # Create a dictionary to store individuals and their access levels
+        self.users_access_levels = {}
+
+    def add_user(self, name, access_level):
+        """Add a user to the system with a specific access level."""
+        self.users_access_levels[name] = access_level
+        print(f"User {name} added with access level {access_level}")
+
+    def check_access(self, name, area):
+        """Check if a user has access to a specific area."""
+        if name not in self.users_access_levels:
+            print(f"User {name} is not registered in the system.")
+            return
+        
+        user_access_level = self.users_access_levels[name]
+        required_access_level = self.areas_access_levels.get(area)
+        
+        if required_access_level is None:
+            print(f"Area '{area}' does not exist.")
+            return
+
+        if user_access_level >= required_access_level:
+            print(f"Access granted: {name} can enter {area}")
+        else:
+            print(f"Access denied: {name} does not have sufficient access to enter {area}")
+    
+    def update_access_level(self, name, new_access_level):
+        """Update the access level of an existing user."""
+        if name in self.users_access_levels:
+            self.users_access_levels[name] = new_access_level
+            print(f"Access level for {name} updated to {new_access_level}")
+        else:
+            print(f"User {name} is not found in the system.")
+
+# Example usage of the system
+
+# Initialize the access control system
+acs = OfficeAccessControl()
+
+# Add users to the system
+acs.add_user("Alice", 2)  # Meeting Room access level
+acs.add_user("Bob", 4)    # Server Room access level
+acs.add_user("Charlie", 1)  # Lobby access only
+
+# Check access for different areas
+acs.check_access("Alice", "Lobby")        # Alice should be able to access the Lobby
+acs.check_access("Bob", "Server Room")    # Bob should be able to access the Server Room
+acs.check_access("Charlie", "Executive Office")  # Charlie should not have access to the Executive Office
+
+# Update access level for a user
+acs.update_access_level("Charlie", 5)     # Give Charlie full access
+acs.check_access("Charlie", "Executive Office")  # Charlie should now be able to access the Executive Office
